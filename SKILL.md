@@ -1,5 +1,5 @@
 ---
-name: 三思
+name: think-thrice
 description: When a new idea arrives mid-development, classify it, assess destructiveness, audit consumers, and choose the lowest-impact integration path — instead of rewriting. Trigger words (CN): "我突然想到""要不要顺便""能不能改成""加个功能""改成"; (EN): "I just thought of""can we also""what if we change""let's also add""should we refactor"
 version: 1.2.0
 author: dmlin7777777

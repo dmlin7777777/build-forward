@@ -1,5 +1,5 @@
 {
-  "name": "三思-marketplace",
+  "name": "think-thrice-marketplace",
   "description": "Marketplace for 三思 (think-thrice) — Agent's new idea firewall",
   "owner": {
     "name": "David Lin",
@@ -7,7 +7,7 @@
   },
   "plugins": [
     {
-      "name": "三思",
+      "name": "think-thrice",
       "description": "三思而后行 — When a new idea arrives mid-development, classify it, assess destructiveness, audit consumers, and choose the lowest-impact integration path — instead of rewriting.",
       "version": "1.2.0",
       "source": "./",
