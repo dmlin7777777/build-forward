@@ -1,181 +1,181 @@
 # build-forward
 
 <p align="center">
-  <b>Agent's New Idea Firewall — classify, don't rewrite.</b>
+  <b>Agent 的新想法防火墙 — 先分类，不推倒。</b>
 </p>
 
 <p align="center">
-  <a href="https://github.com/dmlin7777777/build-forward/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
-  <a href="SKILL.md"><img src="https://img.shields.io/badge/skill-v1.1.0-brightgreen" alt="Version 1.1.0"></a>
-  <a href="#scorecard"><img src="https://img.shields.io/badge/score-84%2F100-orange" alt="Quality score 84/100"></a>
-  <a href="https://skills.sh"><img src="https://img.shields.io/badge/available_on-skills.sh-6366f1" alt="Available on skills.sh"></a>
+  <a href="https://github.com/dmlin7777777/build-forward/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="许可: MIT"></a>
+  <a href="SKILL.md"><img src="https://img.shields.io/badge/skill-v1.1.0-brightgreen" alt="版本 1.1.0"></a>
+  <a href="#评分"><img src="https://img.shields.io/badge/评分-84%2F100-orange" alt="质量评分 84/100"></a>
+  <a href="https://skills.sh"><img src="https://img.shields.io/badge/available_on-skills.sh-6366f1" alt="已在 skills.sh 上线"></a>
 </p>
 
 <p align="center">
-  <a href="#before--after">Demo</a> ·
-  <a href="#quick-start">Quick Start</a> ·
-  <a href="#how-it-works">How It Works</a> ·
-  <a href="SKILL.md">Full Protocol</a> ·
-  <a href="test-prompts.json">Test Scenarios</a>
+  <a href="#加载前后对比">效果演示</a> ·
+  <a href="#快速开始">快速开始</a> ·
+  <a href="#工作原理">工作原理</a> ·
+  <a href="SKILL.md">完整协议</a> ·
+  <a href="test-prompts.json">测试场景</a>
 </p>
 
 ---
 
-## What is this?
+## 这是什么？
 
-**AI agents default to rewriting when a new idea appears. `build-forward` stops that.**
+**AI Agent 在新想法出现时的默认行为是推倒重写。`build-forward` 阻止这件事。**
 
-It's a five-step decision protocol loaded as a skill. When you say *"I just thought of..."* mid-development, instead of bulldozing your working code, the agent pauses, classifies the idea, audits the blast radius, and asks before touching anything. You stay in control. The working code stays working.
+它是一个五步决策协议，以 Skill 形式加载。当你在开发中途说"我突然想到……"时，Agent 不再推平你的已有代码，而是暂停、分类、评估影响范围，并在动手前征求你的意见。控制权始终在你手里，已有代码保持完好。
 
 ---
 
-## Before → After
+## 加载前后对比
 
 <p align="center">
-  <img src="assets/demo.png" alt="Without vs With build-forward — Before/After comparison" width="100%">
+  <img src="assets/demo.png" alt="加载 build-forward 前后的 Agent 行为对比" width="100%">
 </p>
 
-> The difference is one loaded skill. See [`test-prompts.json`](test-prompts.json) for 8 reproducible scenarios.
+> 就是一个 Skill 的区别。详见 [`test-prompts.json`](test-prompts.json) 中的 8 个可复现验证场景。
 
 ---
 
-## Why build-forward?
+## 为什么需要 build-forward？
 
-Every AI-assisted developer knows the cycle: you're building feature A, a new idea for feature B pops up, the agent rewrites half the codebase to "make room" for B, and now everything is broken. It's not a tooling problem — it's a **discipline** problem. Agents don't have any.
+每个 AI 辅助开发者都踩过同一个坑：正在做功能 A，脑子里蹦出功能 B 的想法，Agent 为了"给 B 腾地方"重写了半个代码库，结果全崩了。这不是工具问题——是**纪律**问题。Agent 没有纪律。
 
-`build-forward` gives them a protocol:
+`build-forward` 给它加了一套协议：
 
-| Problem | What build-forward does |
-|---------|------------------------|
-| Agent jumps to code instead of thinking | **Classify first** — every idea gets a label (A/B/C) before a single line changes |
-| Agent bulldozes working features to "make room" | **Audit consumers** — count call sites before building anything |
-| Agent treats all changes as equal | **Assess destructiveness** — one-way doors get a checkpoint pause |
-| Agent over-abstracts "for the future" | **Count before extracting** — 0 consumers = don't build; 1 = inline |
-| Agent churns on the same pattern repeatedly | **Duplication alert** — ≥3 copies triggers a stop-and-ask |
+| 痛点 | build-forward 怎么做 |
+|------|---------------------|
+| Agent 不思考直接动手改代码 | **先分类**——改一行代码之前，每个想法先标 A/B/C |
+| Agent 为"腾地方"推平已有功能 | **消费者审计**——先数清楚有几个调用方再决定建不建 |
+| Agent 不区分改动大小，一视同仁 | **评估破坏性**——单向门改动必须暂停等确认 |
+| Agent "为未来"过度抽象 | **数清楚再抽象**——0 个消费者 = 不建；1 个 = 内联 |
+| Agent 反复写同样的模式 | **重复报警**——≥3 次触发 stop-and-ask |
 
 ---
 
-## Quick Start
+## 快速开始
 
-**1. Install**
+**1. 安装**
 
 ```bash
 # OpenClaw / WorkBuddy
 openclaw skills install build-forward
 
-# npx (Claude Code / Codex / any runtime)
+# npx（Claude Code / Codex / 任意 runtime）
 npx skills add dmlin7777777/build-forward
 
-# Or clone directly
+# 或直接 clone
 git clone https://github.com/dmlin7777777/build-forward.git ~/.workbuddy/skills/build-forward
 ```
 
-**2. Start developing normally.** The skill auto-activates when you say:
+**2. 正常开发。** 当你说以下关键词时，Skill 自动触发：
 
-| Trigger (中文) | Trigger (English) |
-|----------------|-------------------|
+| 触发词（中文） | 触发词（English） |
+|---------------|-------------------|
 | "我突然想到…" | "I just thought of…" |
 | "要不要顺便…" | "can we also…" |
 | "能不能改成…" | "what if we change…" |
 | "加个功能…" | "let's also add…" |
 
-**3. Your agent now pauses, classifies, and suggests** — instead of rewriting.
+**3. Agent 会暂停、分类、建议**——而非重写一切。
 
-**4. Verify it works:** mid-feature, say *"what if we also add a payment system?"* Your agent should respond with a C-class classification and a 24h cooldown suggestion.
-
----
-
-## How It Works
-
-<img src="assets/decision-tree.svg" alt="build-forward decision flow" width="100%">
+**4. 验证是否生效：** 开发中途说"要不要顺便加个支付系统？" Agent 应输出 C 类分类 + 24 小时冷却建议。
 
 ---
 
-## The Five Iron Laws
+## 工作原理
 
-### Law 1 — Classify First, Don't Code
-
-| Type | Criteria | Default Action |
-|------|----------|----------------|
-| **A — Fix** | Breaks current main path; must fix | Handle now → Law 2 |
-| **B — Polish** | Better UX, but works today | Ask user: now or inbox? |
-| **C — Extend** | New feature / scenario | Inbox + 24h cooldown |
-
-The 24-hour cooldown is deliberate: most feature urges either fade or crystallize.
-
-### Law 2 — Assess Destructiveness
-
-| Door type | Examples | Action |
-|-----------|----------|--------|
-| **Two-way** (reversible) | UI tweak, new field, new function, new route | Proceed |
-| **One-way** (hard to reverse) | DB schema, public API, file deletion, global state, core deps | 🔴 **CHECKPOINT** — show impact matrix, wait for user |
-
-### Law 3 — Consumer Audit
-
-Count call sites before building anything.
-
-| Consumers | Action |
-|-----------|--------|
-| **0** | Don't build |
-| **1** | Inline — no abstraction |
-| **2** | Extract — don't generalize |
-| **≥3** | Consider an abstraction layer |
-
-Kills "building for the future" before it starts.
-
-### Law 4 — Choose Integration Mode
-
-Pick lowest-destructiveness path:
-
-**Wrap** → **Extend** → **Branch** → **Replace** (last resort)
-
-### Law 5 — Duplication Alert
-
-≥3 copies of the same logic → 🔴 **CHECKPOINT**. Ask user: consolidate now, or inbox?
-
-> Full protocol with edge cases and self-correction rules in [`SKILL.md`](SKILL.md).
+<img src="assets/decision-tree.svg" alt="build-forward 五铁律决策流" width="100%">
 
 ---
 
-## Safety
+## 五条铁律概要
 
-**This skill is a decision protocol, not an execution engine.** It never deletes files, modifies databases, runs shell commands, auto-commits, sends network requests, or makes one-way-door decisions for you. Its maximum blast radius: slightly slower development pace — by design.
+### 铁律一 — 先分类，不动手
+
+| 类型 | 标准 | 默认处置 |
+|------|------|---------|
+| **A — 堵漏** | 当前主路径断裂，必须修 | 立即处理 → 铁律二 |
+| **B — 优化** | 体验更好，但当前能用 | 问用户：现在做还是进 inbox？ |
+| **C — 扩展** | 全新功能/场景 | 进 inbox + 24h 冷却 |
+
+24 小时冷却是有意设计：大多数功能冲动要么消散，要么沉淀为真实需求。
+
+### 铁律二 — 评估破坏性
+
+| 门类型 | 例子 | 处置 |
+|--------|------|------|
+| **双向门**（可逆） | UI 微调、新字段、新函数、新路由 | 继续 |
+| **单向门**（难反悔） | DB schema、公开 API、文件删除、全局状态、核心依赖升级 | 🔴 **CHECKPOINT** — 输出影响矩阵，等用户确认 |
+
+### 铁律三 — 消费者审计
+
+动手前先数调用方。
+
+| 消费者数 | 处置 |
+|---------|------|
+| **0** | 不建 |
+| **1** | 最简内联 — 不抽象 |
+| **2** | 可提取 — 不泛化 |
+| **≥3** | 可考虑抽象层 |
+
+从源头杜绝"为未来而建"。
+
+### 铁律四 — 选接入模式
+
+按破坏性从低到高：
+
+**Wrap** → **Extend** → **Branch** → **Replace**（最后手段）
+
+### 铁律五 — 重复报警
+
+同一逻辑 ≥3 次重复 → 🔴 **CHECKPOINT**。问用户：现在统一，还是进 inbox？
+
+> 完整协议（含边界场景和自纠正规则）见 [`SKILL.md`](SKILL.md)。
 
 ---
 
-## Ecosystem
+## 安全声明
 
-`build-forward` fills the gap between "what should we build?" and "how do we build it safely?"
+**本 Skill 是决策协议，不是执行引擎。** 它不会删除文件、修改数据库、执行 shell 命令、自动 commit、发送网络请求、或替你决定单向门操作。最大破坏半径：略微降低开发节奏——这是设计意图，不是 bug。
 
-| Skill | Role | When |
+---
+
+## Skill 生态
+
+`build-forward` 填补了"要做什么？"和"怎么安全地做？"之间的空白。
+
+| Skill | 角色 | 时机 |
 |-------|------|------|
-| `brainstorming` / `grill-me` | Requirements clarification | Before coding starts |
-| **`build-forward`** | **New idea firewall** | **Mid-development, new idea arrives** |
-| `ideas-inbox` | B/C-class archive + cooldown tracking | After classification |
-| `vibecoding-workflow` | Execution discipline | After integration path is chosen |
-| `incremental-implementation` | Steady, step-by-step execution | Known requirements, how to execute safely |
+| `brainstorming` / `grill-me` | 需求澄清 | 写代码之前 |
+| **`build-forward`** | **新想法防火墙** | **开发中途新想法到达时** |
+| `ideas-inbox` | B/C 类归档 + 冷却跟踪 | 分类完成后 |
+| `vibecoding-workflow` | 执行纪律 | 接入路径确定后 |
+| `incremental-implementation` | 分步稳妥实现 | 已知需求，如何安全执行 |
 
-The pipeline: **brainstorming → build-forward → ideas-inbox → vibecoding-workflow / incremental-implementation**
-
----
-
-## Optimization History
-
-| Date | Version | Score | Method |
-|------|---------|-------|--------|
-| 2026-06-15 | v1.1.0 | 66 → 82 | Luban (鲁班) 8-step polish |
-| 2026-05-31 | v1.0.0 | 79.6 → 85.0 | Darwin Skill 9-dim optimization |
+完整链路：**brainstorming → build-forward → ideas-inbox → vibecoding-workflow / incremental-implementation**
 
 ---
 
-## Contributing
+## 优化记录
 
-1. **Found an edge case?** Open an issue with the scenario
-2. **Have a test case?** Add it to [`test-prompts.json`](test-prompts.json)
-3. **Want to improve the protocol?** Read [`SKILL.md`](SKILL.md), then open a PR
+| 日期 | 版本 | 评分变化 | 方法 |
+|------|------|---------|------|
+| 2026-06-15 | v1.1.0 | 66 → 82 | 鲁班八步打磨 |
+| 2026-05-31 | v1.0.0 | 79.6 → 85.0 | Darwin Skill 九维优化 |
 
 ---
 
-## License
+## 参与贡献
+
+1. **发现边界场景？** 提 Issue 附上场景描述
+2. **有测试用例？** 加到 [`test-prompts.json`](test-prompts.json)
+3. **想改进协议？** 先读 [`SKILL.md`](SKILL.md)，再提 PR
+
+---
+
+## 许可证
 
 MIT © [dmlin7777777](https://github.com/dmlin7777777)
