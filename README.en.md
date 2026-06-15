@@ -1,14 +1,14 @@
-# 三思 (build-forward)
+# 三思 (think-thrice)
 
 <p align="center">
   <b>Think Thrice Before Acting — Agent's New Idea Firewall.</b>
 </p>
 
 <p align="center">
-  <a href="https://github.com/dmlin7777777/build-forward/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
+  <a href="https://github.com/dmlin7777777/think-thrice/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
   <a href="SKILL.md"><img src="https://img.shields.io/badge/skill-v1.2.0-brightgreen" alt="Version 1.2.0"></a>
   <a href="#optimization-history"><img src="https://img.shields.io/badge/score-81%2F100-orange" alt="Luban score 81/100"></a>
-  <a href="https://skills.sh/dmlin7777777/build-forward"><img src="https://skills.sh/b/dmlin7777777/build-forward" alt="skills.sh installs"></a>
+  <a href="https://skills.sh/dmlin7777777/think-thrice"><img src="https://skills.sh/b/dmlin7777777/think-thrice" alt="skills.sh installs"></a>
 </p>
 
 <p align="center">
@@ -25,7 +25,7 @@
 
 Every AI-assisted developer knows the cycle: you're building feature A, a new idea for feature B pops up, the agent rewrites half the codebase to "make room" for B, and now everything is broken. It's not a tooling problem — it's a **discipline** problem. Agents don't have any.
 
-`三思` (build-forward) gives them a five-step decision protocol. When you say *"I just thought of..."* mid-development, instead of bulldozing your working code, the agent pauses, classifies the idea, audits the blast radius, and asks before touching anything. You stay in control.
+`三思` (think-thrice) gives them a five-step decision protocol. When you say *"I just thought of..."* mid-development, instead of bulldozing your working code, the agent pauses, classifies the idea, audits the blast radius, and asks before touching anything. You stay in control.
 
 ---
 
@@ -45,13 +45,13 @@ Every AI-assisted developer knows the cycle: you're building feature A, a new id
 
 ```bash
 # OpenClaw / WorkBuddy
-openclaw skills install build-forward
+openclaw skills install think-thrice
 
 # npx (Claude Code / Codex / any runtime)
-npx skills add dmlin7777777/build-forward
+npx skills add dmlin7777777/think-thrice
 
 # Or clone directly
-git clone https://github.com/dmlin7777777/build-forward.git ~/.workbuddy/skills/build-forward
+git clone https://github.com/dmlin7777777/think-thrice.git ~/.workbuddy/skills/build-forward
 ```
 
 **2. Start developing normally.** The skill auto-activates when you say:

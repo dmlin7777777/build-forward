@@ -5,10 +5,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/dmlin7777777/build-forward/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="许可: MIT"></a>
+  <a href="https://github.com/dmlin7777777/think-thrice/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="许可: MIT"></a>
   <a href="SKILL.md"><img src="https://img.shields.io/badge/skill-v1.2.0-brightgreen" alt="版本 1.2.0"></a>
   <a href="#优化记录"><img src="https://img.shields.io/badge/过尺-81%2F100-orange" alt="鲁班过尺 81/100"></a>
-  <a href="https://skills.sh/dmlin7777777/build-forward"><img src="https://skills.sh/b/dmlin7777777/build-forward" alt="skills.sh installs"></a>
+  <a href="https://skills.sh/dmlin7777777/think-thrice"><img src="https://skills.sh/b/dmlin7777777/think-thrice" alt="skills.sh installs"></a>
 </p>
 
 <p align="center">
@@ -45,13 +45,13 @@
 
 ```bash
 # OpenClaw / WorkBuddy
-openclaw skills install build-forward
+openclaw skills install think-thrice
 
 # npx（Claude Code / Codex / 任意 runtime）
-npx skills add dmlin7777777/build-forward
+npx skills add dmlin7777777/think-thrice
 
 # 或直接 clone
-git clone https://github.com/dmlin7777777/build-forward.git ~/.workbuddy/skills/build-forward
+git clone https://github.com/dmlin7777777/think-thrice.git ~/.workbuddy/skills/build-forward
 ```
 
 **2. 正常开发。** 当你说以下关键词时，Skill 自动触发：

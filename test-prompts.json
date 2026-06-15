@@ -1,6 +1,6 @@
 {
   "$schema": "https://agentskill.sh/schemas/test-prompts.json",
-  "$description": "三思 (build-forward) behavior verification — 5 scenarios covering all iron laws and edge cases. Each scenario proves the skill changes Agent behavior in measurable ways.",
+  "$description": "三思 (think-thrice) behavior verification — 5 scenarios covering all iron laws and edge cases. Each scenario proves the skill changes Agent behavior in measurable ways.",
   "scenarios": [
     {
       "id": "BF-T01",
