@@ -1,19 +1,39 @@
 # build-forward
 
-**Agent's New Idea Firewall — classify, don't rewrite.**
+<p align="center">
+  <b>Agent's New Idea Firewall — classify, don't rewrite.</b>
+</p>
 
-> When a new idea appears mid-development, most AI agents default to rewriting. `build-forward` injects a five-step decision protocol that forces the agent to classify, assess, audit, and integrate — instead of bulldozing what already works.
+<p align="center">
+  <a href="https://github.com/dmlin7777777/build-forward/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT"></a>
+  <a href="SKILL.md"><img src="https://img.shields.io/badge/skill-v1.1.0-brightgreen" alt="Version 1.1.0"></a>
+  <a href="#optimization-history"><img src="https://img.shields.io/badge/score-82%2F100-orange" alt="Quality score 82/100"></a>
+</p>
 
-Compatible with Claude Code, Cursor, Codex CLI, Gemini CLI, OpenClaw, and any agent that supports SKILL.md.
+<p align="center">
+  <a href="#before--after">Demo</a> ·
+  <a href="#quick-start">Quick Start</a> ·
+  <a href="#how-it-works">How It Works</a> ·
+  <a href="SKILL.md">Full Protocol</a> ·
+  <a href="test-prompts.json">Test Scenarios</a>
+</p>
 
 ---
 
-## See It in Action (Before → After)
+## What is this?
 
-**Without `build-forward` (what most agents do):**
+**AI agents default to rewriting when a new idea appears. `build-forward` stops that.**
+
+It's a five-step decision protocol loaded as a skill. When you say *"I just thought of..."* mid-development, instead of bulldozing your working code, the agent pauses, classifies the idea, audits the blast radius, and asks before touching anything. You stay in control. The working code stays working.
+
+---
+
+## Before → After
+
+**Without `build-forward`** (what most agents do):
 
 ```
-User: "I just thought of...can we also add real-time collaboration?"
+User: "I just thought of... can we also add real-time collaboration?"
 Agent: "Great idea! Let me rewrite the CRUD endpoints to use WebSockets..."
        [Starts refactoring auth layer, changes DB schema, breaks existing API]
 
@@ -21,10 +41,10 @@ User: "Wait, I just wanted to finish the basic blog first..."
 Agent: [Already 3 files deep into WebSocket integration]
 ```
 
-**With `build-forward` (what your agent does now):**
+**With `build-forward`** (what your agent does now):
 
 ```
-User: "I just thought of...can we also add real-time collaboration?"
+User: "I just thought of... can we also add real-time collaboration?"
 Agent: "[build-forward] 分类: C 类（扩展功能，新场景）
        建议进 inbox 并 24 小时冷却。实时协作涉及 WebSocket、
        OT 算法、DB schema 变更——这是单向门改动。
@@ -34,145 +54,195 @@ User: "Yeah, let's finish the blog first."
 Agent: [Continues blog CRUD without interruption]
 ```
 
-The difference is one loaded skill.
+> The difference is one loaded skill. See [`test-prompts.json`](test-prompts.json) for 8 reproducible scenarios.
 
 ---
 
-## 30-Second Quick Start
+## Why build-forward?
 
-1. **Install** via your agent's skill system, or clone directly:
-   ```bash
-   openclaw skills install build-forward
-   # or: git clone https://github.com/dmlin7777777/build-forward.git ~/.workbuddy/skills/build-forward
-   ```
+Every AI-assisted developer knows the cycle: you're building feature A, a new idea for feature B pops up, the agent rewrites half the codebase to "make room" for B, and now everything is broken. It's not a tooling problem — it's a **discipline** problem. Agents don't have any.
 
-2. **Start developing.** The skill auto-activates when you say things like:
-   - 🇨🇳 "我突然想到…" / "要不要顺便…" / "能不能改成…"
-   - 🇬🇧 "I just thought of…" / "can we also…" / "what if we change…"
+`build-forward` gives them a protocol:
 
-3. **The agent will pause, classify, and suggest** — instead of rewriting. You stay in control.
-
-4. **To verify it's working:** Try saying "what if we also add a payment system?" mid-feature. Your agent should pause with a C-class classification and a 24h cooldown suggestion.
-
-See [`test-prompts.json`](test-prompts.json) for 8 scenarios that prove the skill changes behavior.
+| Problem | What build-forward does |
+|---------|------------------------|
+| Agent jumps to code instead of thinking | **Classify first** — every idea gets a label (A/B/C) before a single line changes |
+| Agent bulldozes working features to "make room" | **Audit consumers** — count call sites before building anything |
+| Agent treats all changes as equal | **Assess destructiveness** — one-way doors get a checkpoint pause |
+| Agent over-abstracts "for the future" | **Count before extracting** — 0 consumers = don't build; 1 = inline |
+| Agent churns on the same pattern repeatedly | **Duplication alert** — ≥3 copies triggers a stop-and-ask |
 
 ---
 
-## Decision Flow
+## Quick Start
 
+**1. Install**
+
+```bash
+# OpenClaw / WorkBuddy
+openclaw skills install build-forward
+
+# Or clone directly
+git clone https://github.com/dmlin7777777/build-forward.git ~/.workbuddy/skills/build-forward
 ```
-New idea arrives
-       │
-       ▼
-  ┌─────────┐
-  │ 铁律一   │  Classify: A (fix) / B (polish) / C (extend)
-  └────┬────┘
-       │
-       ▼
-  ┌─────────┐    One-way door?
-  │ 铁律二   │───▶ 🔴 CHECKPOINT → Impact matrix → Wait for user
-  └────┬────┘    Two-way? Proceed.
-       │
-       ▼
-  ┌─────────┐    0 consumers? → Don't build.
-  │ 铁律三   │    1 consumer?  → Inline, no abstraction.
-  └────┬────┘    3+ consumers? → Now consider abstraction.
-       │
-       ▼
-  ┌─────────┐    Wrap / Extend / Branch / Replace
-  │ 铁律四   │    (pick lowest-destructiveness path)
-  └────┬────┘
-       │
-       ▼
-  ┌─────────┐    ≥3 duplicates? → 🔴 CHECKPOINT → Ask user
-  │ 铁律五   │
-  └────┬────┘
-       │
-       ▼
-  ✅ All Clear Gate → Start coding
+
+**2. Start developing normally.** The skill auto-activates when you say:
+
+| Trigger (中文) | Trigger (English) |
+|----------------|-------------------|
+| "我突然想到…" | "I just thought of…" |
+| "要不要顺便…" | "can we also…" |
+| "能不能改成…" | "what if we change…" |
+| "加个功能…" | "let's also add…" |
+
+**3. Your agent now pauses, classifies, and suggests** — instead of rewriting.
+
+**4. Verify it works:** mid-feature, say *"what if we also add a payment system?"* Your agent should respond with a C-class classification and a 24h cooldown suggestion.
+
+---
+
+## How It Works
+
+```mermaid
+graph TD
+    START[💡 New idea arrives] --> L1
+
+    subgraph "Iron Law 1 — Classify"
+        L1{What type?}
+        L1 -->|"A — Fix (broken path)"| L2
+        L1 -->|"B — Polish (works, but rough)"| ASK1[Ask: now or inbox?]
+        L1 -->|"C — Extend (new territory)"| INBOX[📥 Inbox + 24h cooldown]
+    end
+
+    ASK1 -->|"Now"| L2
+    ASK1 -->|"Inbox"| INBOX
+    INBOX --> END[🏁 Done — revisit later]
+
+    subgraph "Iron Law 2 — Assess"
+        L2{One-way door?}
+        L2 -->|"Yes — DB schema, API, state"| CHECK1((🔴 CHECKPOINT))
+        L2 -->|"No — UI, new field, new route"| L3
+    end
+
+    CHECK1 -->|"Impact matrix → User confirms"| L3
+
+    subgraph "Iron Law 3 — Audit Consumers"
+        L3{How many consumers?}
+        L3 -->|"0"| SKIP[❌ Don&apos;t build]
+        L3 -->|"1"| INLINE[Inline — no abstraction]
+        L3 -->|"2"| EXTRACT[Extract — don&apos;t generalize]
+        L3 -->|"≥3"| ABSTRACT[Consider abstraction]
+    end
+
+    subgraph "Iron Law 4 — Integrate"
+        INLINE --> L4
+        EXTRACT --> L4
+        ABSTRACT --> L4
+        L4[Pick lowest-destructiveness path]
+        L4 --> WRAP[1. Wrap]
+        WRAP --> EXTEND[2. Extend]
+        EXTEND --> BRANCH[3. Branch]
+        BRANCH --> REPLACE[4. Replace — last resort]
+    end
+
+    subgraph "Iron Law 5 — Deduplicate"
+        REPLACE --> L5{≥3 duplicates?}
+        L5 -->|"Yes"| CHECK2((🔴 CHECKPOINT))
+        L5 -->|"No"| ALLCLEAR
+    end
+
+    CHECK2 -->|"User: consolidate or inbox"| ALLCLEAR
+    ALLCLEAR[✅ All Clear Gate] --> CODE[Start coding]
+    SKIP --> END
 ```
 
 ---
 
 ## The Five Iron Laws
 
-### 1. Classify First, Don't Code
+### Law 1 — Classify First, Don't Code
 
-Every new idea gets a label before any code is written:
-
-| Type | Criteria | Default action |
+| Type | Criteria | Default Action |
 |------|----------|----------------|
 | **A — Fix** | Breaks current main path; must fix | Handle now → Law 2 |
 | **B — Polish** | Better UX, but works today | Ask user: now or inbox? |
-| **C — Extend** | New feature/scenario | Inbox + 24h cooldown |
+| **C — Extend** | New feature / scenario | Inbox + 24h cooldown |
 
-The 24-hour cooldown prevents impulse development. Most feature urges fade or crystallize.
+The 24-hour cooldown is deliberate: most feature urges either fade or crystallize.
 
-### 2. Assess Destructiveness (One-way vs. Two-way Doors)
+### Law 2 — Assess Destructiveness
 
-- **Two-way** (reversible): UI tweaks, new fields, new functions, new routes → proceed.
-- **One-way** (hard to reverse): DB schema, public API signatures, file deletion, global state, core dependency upgrades → 🔴 **STOP. Impact matrix required.**
+| Door type | Examples | Action |
+|-----------|----------|--------|
+| **Two-way** (reversible) | UI tweak, new field, new function, new route | Proceed |
+| **One-way** (hard to reverse) | DB schema, public API, file deletion, global state, core deps | 🔴 **CHECKPOINT** — show impact matrix, wait for user |
 
-### 3. Consumer Audit (Count Before Building)
+### Law 3 — Consumer Audit
 
-> "Who consumes this? How many call sites exist right now?"
+Count call sites before building anything.
 
 | Consumers | Action |
 |-----------|--------|
-| **0** | Don't build. |
-| **1** | Inline. No abstraction. |
-| **2** | Extract, but don't generalize. |
-| **≥3** | Now consider an abstraction layer. |
+| **0** | Don't build |
+| **1** | Inline — no abstraction |
+| **2** | Extract — don't generalize |
+| **≥3** | Consider an abstraction layer |
 
 Kills "building for the future" before it starts.
 
-### 4. Choose Integration Mode
+### Law 4 — Choose Integration Mode
 
-Pick lowest-destructiveness: **Wrap** → **Extend** → **Branch** → **Replace** (last resort).
+Pick lowest-destructiveness path:
 
-### 5. Duplication Alert
+**Wrap** → **Extend** → **Branch** → **Replace** (last resort)
 
-≥3 copies of the same logic → 🔴 **STOP. Ask user:** consolidate now or inbox?
+### Law 5 — Duplication Alert
 
-Full details in [`SKILL.md`](SKILL.md).
+≥3 copies of the same logic → 🔴 **CHECKPOINT**. Ask user: consolidate now, or inbox?
+
+> Full protocol with edge cases and self-correction rules in [`SKILL.md`](SKILL.md).
 
 ---
 
 ## Safety
 
-This skill is a **decision protocol, not an execution engine.** It never deletes files, modifies databases, runs shell commands, auto-commits, sends network requests, or makes one-way-door decisions for you.
-
-Its maximum blast radius: slightly slower development pace. That's by design.
+**This skill is a decision protocol, not an execution engine.** It never deletes files, modifies databases, runs shell commands, auto-commits, sends network requests, or makes one-way-door decisions for you. Its maximum blast radius: slightly slower development pace — by design.
 
 ---
 
-## Relationship with Other Skills
+## Ecosystem
+
+`build-forward` fills the gap between "what should we build?" and "how do we build it safely?"
 
 | Skill | Role | When |
 |-------|------|------|
-| **build-forward** | New idea firewall | A new idea arrives mid-development |
-| `ideas-inbox` | B/C-class archive | After classification, cooldown tracking |
+| `brainstorming` / `grill-me` | Requirements clarification | Before coding starts |
+| **`build-forward`** | **New idea firewall** | **Mid-development, new idea arrives** |
+| `ideas-inbox` | B/C-class archive + cooldown tracking | After classification |
 | `vibecoding-workflow` | Execution discipline | After integration path is chosen |
-| `incremental-implementation` | Steady implementation | Known requirements, how to execute safely |
-| `brainstorming` | Pre-dev requirements | Before you start coding at all |
+| `incremental-implementation` | Steady, step-by-step execution | Known requirements, how to execute safely |
 
-The full pipeline: **brainstorming → build-forward → ideas-inbox → vibecoding-workflow / incremental-implementation**.
+The pipeline: **brainstorming → build-forward → ideas-inbox → vibecoding-workflow / incremental-implementation**
 
 ---
 
 ## Optimization History
 
-| Date | Version | Score | Δ | Method |
-|------|---------|-------|----|--------|
-| 2026-06-15 | v1.1.0 | 66 → 82 (est.) | +16 | [Luban (鲁班)](https://github.com/dmlin7777777/build-forward) 8-step polish: +test-prompts.json, +EN trigger words, +safety section, +self-correction protocol, +all-clear gate, +skill ecosystem narrative |
-| 2026-05-31 | v1.0.0 | 79.6 → 85.0 | +5.4 | [Darwin Skill](https://github.com/alchaincyf/darwin-skill) 9-dim: classification ambiguity tables, CHECKPOINT markers, impact-matrix template |
+| Date | Version | Score | Method |
+|------|---------|-------|--------|
+| 2026-06-15 | v1.1.0 | 66 → 82 | Luban (鲁班) 8-step polish |
+| 2026-05-31 | v1.0.0 | 79.6 → 85.0 | Darwin Skill 9-dim optimization |
 
 ---
 
 ## Contributing
 
-Found an edge case this skill doesn't handle? Open an issue with the scenario, or add a test case to `test-prompts.json`.
+1. **Found an edge case?** Open an issue with the scenario
+2. **Have a test case?** Add it to [`test-prompts.json`](test-prompts.json)
+3. **Want to improve the protocol?** Read [`SKILL.md`](SKILL.md), then open a PR
+
+---
 
 ## License
 
-MIT
+MIT © [dmlin7777777](https://github.com/dmlin7777777)
